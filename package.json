@@ -1,0 +1,19 @@
+{
+  "name": "webscrapsuplementos",
+  "version": "1.0.0",
+  "description": "Extraer precios de pagina oficial",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "Gregory Rodriguez",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  },
+  "dependencies": {
+    "puppeteer": "^22.13.1"
+  }
+}
