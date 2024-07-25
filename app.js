@@ -1,11 +1,10 @@
-const puppeteer = require('puppeteer')
+import puppeteer from "puppeteer"
 
-const abrir = async()=>{
+/*(async()=>{
 
     const URL = 'https://suplementos.com/marca/ultratech-nutrition/'
-    const browser = await puppeteer.launch({
-        headless:false
-        })
+
+    const browser = await puppeteer.launch({headless:false})
 
         const page = await browser.newPage()
 
@@ -15,7 +14,45 @@ const abrir = async()=>{
         
         console.log('titulo de la pagina: '+tittle)
 
-        //page.close()
-    }
+        let productos = []
+        let nextPage = false
 
-    abrir();
+        await page.evaluate(()=>{
+            const busqueda = Array.from(document.querySelectorAll('.title-wrapper'))
+          
+                busqueda.map(product =>{
+                const nombre = product.querySelector('.woocommerce-loop-product__link').innerText
+                const precio = product.querySelector('.amount').innerText
+                
+                console.log(nombre)
+                console.log(precio)
+            })
+           
+        })
+
+        //page.close()
+    })//();
+
+    //abrir();*/
+
+    (async()=>{
+
+    
+        const browser = await puppeteer.launch({
+            headless: false,
+            defaultViewport: null,
+            args: ['--start-maximized']
+        })
+    
+            const page = await browser.newPage()
+    
+            await page.goto('https://suplementos.com/marca/ultratech-nutrition/')
+
+            await page.screenshot({
+                path: './src/example.png'
+            })
+
+            await browser.close()
+
+    })();
+
