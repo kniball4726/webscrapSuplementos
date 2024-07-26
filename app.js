@@ -33,7 +33,7 @@ import puppeteer from "puppeteer"
         //page.close()
     })//();
 
-    //abrir();*/
+    //abrir();
 
     (async()=>{
 
@@ -54,5 +54,22 @@ import puppeteer from "puppeteer"
 
             await browser.close()
 
-    })();
+    })//();*/
 
+    (async()=>{
+
+    
+        const browser = await puppeteer.launch({
+            headless: false,
+            defaultViewport: null,
+            args: ['--start-maximized']
+        })
+    
+            const page = await browser.newPage()
+    
+            await page.goto('https://quotes.toscrape.com')
+            await page.click('a[href="/login"]')
+
+            //await browser.close()
+
+    })();
