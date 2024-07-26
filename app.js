@@ -67,9 +67,10 @@ import puppeteer from "puppeteer"
     
             const page = await browser.newPage()
     
-            await page.goto('https://quotes.toscrape.com')
-            await page.click('a[href="/login"]')
-
-            //await browser.close()
+            //await page.goto('https://quotes.toscrape.com')
+            await page.goto('https://google.com')
+            //await page.click('a[href="/login"]')
+            await page.screenshot({path: './src/quoteimage.png'})
+            await browser.close()
 
     })();
