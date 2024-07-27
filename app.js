@@ -1,65 +1,9 @@
 import puppeteer from "puppeteer"
 
-/*(async()=>{
-
-    const URL = 'https://suplementos.com/marca/ultratech-nutrition/'
-
-    const browser = await puppeteer.launch({headless:false})
-
-        const page = await browser.newPage()
-
-        await page.goto(URL, {waitUntil: 'networkidle2'})
-
-        const tittle = await page.title()
-        
-        console.log('titulo de la pagina: '+tittle)
-
-        let productos = []
-        let nextPage = false
-
-        await page.evaluate(()=>{
-            const busqueda = Array.from(document.querySelectorAll('.title-wrapper'))
-          
-                busqueda.map(product =>{
-                const nombre = product.querySelector('.woocommerce-loop-product__link').innerText
-                const precio = product.querySelector('.amount').innerText
-                
-                console.log(nombre)
-                console.log(precio)
-            })
-           
-        })
-
-        //page.close()
-    })//();
-
-    //abrir();
-
     (async()=>{
 
     
-        const browser = await puppeteer.launch({
-            headless: false,
-            defaultViewport: null,
-            args: ['--start-maximized']
-        })
-    
-            const page = await browser.newPage()
-    
-            await page.goto('https://suplementos.com/marca/ultratech-nutrition/')
-
-            await page.screenshot({
-                path: './src/example.png'
-            })
-
-            await browser.close()
-
-    })//();*/
-
-    (async()=>{
-
-    
-        const browser = await puppeteer.launch({
+        /*const browser = await puppeteer.launch({
             headless: 'new',
             defaultViewport: null,
             args: ['--start-maximized']
@@ -67,34 +11,46 @@ import puppeteer from "puppeteer"
     
             const page = await browser.newPage()
     
-            //await page.goto('https://quotes.toscrape.com')
-            await page.goto('https://suplementos.com/marca/ultratech-nutrition/')
-            //await page.click('a[href="/login"]')
-            //await page.screenshot({path: './src/quoteimage.png'})
-            
-            let products = []
-            let nextPage = true
+            await page.goto('https://quotes.toscrape.com/')
 
-            while (nextPage){
+            const results = await page.evaluate(()=>{
+                const quotes = document.querySelectorAll('.quote')
+                return quotes
+                    })
+                    
+                console.log(results)
+                   
 
-            const newProducts = await page.evaluate(()=>{
-            
-                return Array.from(document.querySelectorAll('.woocommerce-LoopProduct-link.woocommerce-loop-product__link'))
-                
-                return products.map(product =>{
-                    const title = product.querySelector('p.name.product-title.woocommerce-loop-product__title').innerText
-                    const price = product.querySelector('span.woocommerce-Price-currencySymbol').innerText
+            })();*/
 
-                })
-
-
-                
-
+            const browser = await puppeteer.launch({
+                headless: 'new',
+                defaultViewport: null,
+                args: ['--start-maximized']
             })
-            products = [...products, ...newProducts]
-            console.log(products)
-        }
+        
+                const page = await browser.newPage()
+        
+                await page.goto('https://quotes.toscrape.com/')
     
-            await browser.close()
-
-    })()
+                const results = await page.evaluate(()=>{
+                    const quotes = document.querySelectorAll('.quote')
+                    const data = [ ...quotes].map((quote) =>{
+                       
+                        const Texto = quote.querySelector('.text').innerText
+                        const Autor = quote.querySelector('.author').innerText
+                        const Etiquetas = [ ... quote.querySelectorAll('.tag')].map((tag) => tag.innerText)
+                        
+                        return {
+                            Texto,
+                            Autor,
+                            Etiquetas
+                            }
+                    }) 
+                           return data
+                        })
+                        
+                    console.log(results)
+                       
+    
+                })();
