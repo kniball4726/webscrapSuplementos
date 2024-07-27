@@ -1,56 +1,61 @@
-import puppeteer from "puppeteer"
+import puppeteer from 'puppeteer';
 
-    (async()=>{
+            const scrollPage = async (page)=>{
+               while (true){
+                const previusHeight = await page.evaluate('document.body.scrollHeight')
+                await page.evaluate('window.scrollTo(0,document.body.scrollHeight)')
+                await page.waitForFunction(`document.body.scrollHeight > ${previusHeight}`)
+                await new Promise((resolve) => setTimeout(resolve, 1000))
+            }
+               }
 
-    
-        /*const browser = await puppeteer.launch({
-            headless: 'new',
-            defaultViewport: null,
-            args: ['--start-maximized']
-        })
-    
-            const page = await browser.newPage()
-    
-            await page.goto('https://quotes.toscrape.com/')
-
-            const results = await page.evaluate(()=>{
-                const quotes = document.querySelectorAll('.quote')
-                return quotes
-                    })
-                    
-                console.log(results)
-                   
-
-            })();*/
+            (async()=>{
 
             const browser = await puppeteer.launch({
-                headless: 'new',
+                headless: false,
                 defaultViewport: null,
-                args: ['--start-maximized']
+
+
+
             })
         
                 const page = await browser.newPage()
-        
-                await page.goto('https://quotes.toscrape.com/')
+                
+            
+                await page.goto('https://suplementos.com/marca/ultratech-nutrition/', {
+                        waitUntil: "networkidle2"
+
+                })
+
+                
+                await scrollPage(page);
+                
+                page.setDefaultNavigationTimeout(0);
     
                 const results = await page.evaluate(()=>{
-                    const quotes = document.querySelectorAll('.quote')
-                    const data = [ ...quotes].map((quote) =>{
+                    
+                    
+                    const productos =  document.querySelectorAll('.box-text.box-text-products')
+                    const data =  [ ...productos].map((producto) =>{
                        
-                        const Texto = quote.querySelector('.text').innerText
-                        const Autor = quote.querySelector('.author').innerText
-                        const Etiquetas = [ ... quote.querySelectorAll('.tag')].map((tag) => tag.innerText)
-                        
+                        const Producto =  producto.querySelector('.name').innerText
+                        const Categoria = producto.querySelector('.category').innerText
+                        const Precio = producto.querySelector('.price-wrapper').innerText
+                                               
                         return {
-                            Texto,
-                            Autor,
-                            Etiquetas
+                            Producto,
+                            Categoria,
+                            Precio
                             }
                     }) 
                            return data
                         })
                         
-                    console.log(results)
+                    await console.log(results)
+                    await console.log(`Productos escaneados ${results.length}`)
+                    await browser.close()
+
                        
     
                 })();
+
