@@ -60,7 +60,7 @@ import puppeteer from "puppeteer"
 
     
         const browser = await puppeteer.launch({
-            headless: false,
+            headless: 'new',
             defaultViewport: null,
             args: ['--start-maximized']
         })
@@ -68,9 +68,33 @@ import puppeteer from "puppeteer"
             const page = await browser.newPage()
     
             //await page.goto('https://quotes.toscrape.com')
-            await page.goto('https://google.com')
+            await page.goto('https://suplementos.com/marca/ultratech-nutrition/')
             //await page.click('a[href="/login"]')
-            await page.screenshot({path: './src/quoteimage.png'})
+            //await page.screenshot({path: './src/quoteimage.png'})
+            
+            let products = []
+            let nextPage = true
+
+            while (nextPage){
+
+            const newProducts = await page.evaluate(()=>{
+            
+                return Array.from(document.querySelectorAll('.woocommerce-LoopProduct-link.woocommerce-loop-product__link'))
+                
+                return products.map(product =>{
+                    const title = product.querySelector('p.name.product-title.woocommerce-loop-product__title').innerText
+                    const price = product.querySelector('span.woocommerce-Price-currencySymbol').innerText
+
+                })
+
+
+                
+
+            })
+            products = [...products, ...newProducts]
+            console.log(products)
+        }
+    
             await browser.close()
 
-    })();
+    })()
